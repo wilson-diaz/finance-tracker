@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Container, Header } from 'semantic-ui-react'
 import NavMenu from './components/NavMenu'
 import AllocationPage from './components/AllocationPage'
+import DepositForm from './components/DepositForm'
 
 const App = () => {
   const appStyle = {
@@ -17,6 +18,7 @@ const App = () => {
         <Routes>
           <Route exact path='/' element={<AllocationPage />} />
           <Route exact path='allocations' element={<AllocationPage />} />
+          <Route exact path='deposit' element={<DepositForm />} />
         </Routes>
       </Container>
     </div>
