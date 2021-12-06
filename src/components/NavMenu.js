@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 const NavMenu = () => {
@@ -8,16 +9,19 @@ const NavMenu = () => {
   return (
     <Menu pointing secondary>
       <Menu.Item
+        as={Link} to='/allocations'
         name='allocations'
         active={activeItem === 'allocations'}
         onClick={handleItemClick}
       />
       <Menu.Item
+        as={Link} to='/deposit'
         name='deposit'
         active={activeItem === 'deposit'}
         onClick={handleItemClick}
       />
       <Menu.Item
+        as={Link} to='/transactions'
         name='transactions'
         active={activeItem === 'transactions'}
         onClick={handleItemClick}
