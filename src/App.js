@@ -1,8 +1,8 @@
 import React from 'react'
-import { Container, Header, Grid } from 'semantic-ui-react'
+import { Routes, Route } from 'react-router-dom'
+import { Container, Header } from 'semantic-ui-react'
 import NavMenu from './components/NavMenu'
-import AllocationChart from './components/AllocationChart'
-import AllocationList from './components/AllocationList'
+import AllocationPage from './components/AllocationPage'
 
 const App = () => {
   const appStyle = {
@@ -14,14 +14,10 @@ const App = () => {
       <Container>
         <Header as="h1">Finance Tracker</Header>
         <NavMenu />
-        <Grid columns={2}>
-          <Grid.Column>
-            <AllocationChart />
-          </Grid.Column>
-          <Grid.Column>
-            <AllocationList />
-          </Grid.Column>
-        </Grid>
+        <Routes>
+          <Route exact path='/' element={<AllocationPage />} />
+          <Route exact path='allocations' element={<AllocationPage />} />
+        </Routes>
       </Container>
     </div>
   )
