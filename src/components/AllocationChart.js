@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts'
 import { Header } from 'semantic-ui-react'
