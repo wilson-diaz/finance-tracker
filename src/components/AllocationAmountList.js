@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import { List, Header } from 'semantic-ui-react'
 import AllocationAmount from './AllocationAmount'
