@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import AllocationChart from './AllocationChart'
-import AllocationList from './AllocationList'
+import AllocationAmountList from './AllocationAmountList'
 
 const AllocationPage = () => {
   return (
@@ -10,7 +10,7 @@ const AllocationPage = () => {
         <AllocationChart />
       </Grid.Column>
       <Grid.Column>
-        <AllocationList />
+        <AllocationAmountList />
       </Grid.Column>
     </Grid>
   )
