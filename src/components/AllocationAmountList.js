@@ -2,7 +2,7 @@
 import React from 'react'
 import { List, Header } from 'semantic-ui-react'
 
-const AllocationList = () => {
+const AllocationAmountList = () => {
   const data = [
     { name: 'Food', value: 400 },
     { name: 'Savings', value: 6000 },
@@ -19,4 +19,4 @@ const AllocationList = () => {
   )
 }
 
-export default AllocationList
+export default AllocationAmountList
