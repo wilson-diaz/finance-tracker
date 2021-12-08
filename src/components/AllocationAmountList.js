@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import { List, Header } from 'semantic-ui-react'
+import AllocationAmount from './AllocationAmount'
 
 const AllocationAmountList = () => {
   const data = [
@@ -13,7 +14,7 @@ const AllocationAmountList = () => {
     <>
       <Header as='h3'>Current Amounts</Header>
       <List divided verticalAlign='middle'>
-        {data.map(ele => <List.Item key={ele.name}>{`${ele.name}: $${ele.value}`}</List.Item>)}
+        {data.map(ele => <AllocationAmount key={ele.name} name={ele.name} value={ele.value} />)}
       </List>
     </>
   )
