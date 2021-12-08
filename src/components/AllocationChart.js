@@ -1,5 +1,5 @@
 import React from 'react'
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip } from 'recharts'
 import { Header } from 'semantic-ui-react'
 
 const AllocationChart = () => {
@@ -25,12 +25,13 @@ const AllocationChart = () => {
   }
 
   return (
-    <div style={{ width: '100%', height: 400 }}>
+    <div style={{ width: '100%', height: 400, paddingBottom: 40 }}>
       <Header as='h3'>Budget Percentages</Header>
       <ResponsiveContainer>
         <PieChart>
           <Pie
             data={data}
+            cy='45%'
             labelLine={false}
             label={renderCustomizedLabel}
             fill="#8884d8"
@@ -40,6 +41,7 @@ const AllocationChart = () => {
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
+          <Tooltip />
           <Legend align='center' verticalAlign='bottom' iconType='circle' />
         </PieChart>
       </ResponsiveContainer>
