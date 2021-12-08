@@ -14,7 +14,7 @@ const AllocationAmountFormModal = () => {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Make Transaction</Button>}
+      trigger={<Button size='small'>Make Transaction</Button>}
     >
       <Modal.Header>Make Transaction</Modal.Header>
       <Modal.Content>

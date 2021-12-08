@@ -1,15 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { List, Segment } from 'semantic-ui-react'
+import { Grid, List, Segment } from 'semantic-ui-react'
 import AllocationAmountFormModal from './AllocationAmountFormModal'
 
 const AllocationAmount = ({ name, value }) => {
   return (
     <List.Item key={name}>
-      <Segment compact basic floated='right'>
-        <AllocationAmountFormModal />
+      <Segment basic>
+        <Grid columns={2} verticalAlign='middle'>
+          <Grid.Column>
+            <p>{`${name}: $${value}`}</p>
+          </Grid.Column>
+          <Grid.Column>
+            <AllocationAmountFormModal />
+          </Grid.Column>
+        </Grid>
       </Segment>
-      <List.Content>{`${name}: $${value}`}</List.Content>
     </List.Item>
   )
 }
