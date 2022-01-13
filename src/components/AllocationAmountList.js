@@ -1,5 +1,5 @@
-import React from 'react'
-import { List, Header } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Header, Accordion, Menu } from 'semantic-ui-react'
 import AllocationAmount from './AllocationAmount'
 
 const AllocationAmountList = () => {
@@ -9,12 +9,20 @@ const AllocationAmountList = () => {
     { name: 'Investments', value: 200 },
     { name: 'Rent', value: 800 },
   ]
+
+  const [activeIndex, setActiveIndex] = useState(-1)
+
+  const handleClick = (e, titleProps) => {
+    const { index } = titleProps
+    setActiveIndex(activeIndex === index ? -1 : index)
+  }
+
   return (
     <>
-      <Header as='h3'>Current Amounts</Header>
-      <List divided verticalAlign='middle'>
-        {data.map(ele => <AllocationAmount key={ele.name} name={ele.name} value={ele.value} />)}
-      </List>
+      <Header as='h3'>Expenses</Header>
+      <Accordion as={Menu} vertical fluid>
+        {data.map((ele, i) => <AllocationAmount key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
+      </Accordion>
     </>
   )
 }
