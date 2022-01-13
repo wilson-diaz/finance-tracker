@@ -15,12 +15,6 @@ const NavMenu = () => {
         onClick={handleItemClick}
       />
       <Menu.Item
-        as={Link} to='/deposit'
-        name='deposit'
-        active={activeItem === 'deposit'}
-        onClick={handleItemClick}
-      />
-      <Menu.Item
         as={Link} to='/transactions'
         name='transactions'
         active={activeItem === 'transactions'}
