@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Header, Accordion, Menu } from 'semantic-ui-react'
+import { Header, Accordion, Menu, Button } from 'semantic-ui-react'
 import AllocationAmount from './AllocationAmount'
 
 const AllocationAmountList = () => {
@@ -23,6 +23,7 @@ const AllocationAmountList = () => {
       <Accordion as={Menu} vertical fluid>
         {data.map((ele, i) => <AllocationAmount key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
       </Accordion>
+      <Button floated='right'>+ Add Category</Button>
     </>
   )
 }
