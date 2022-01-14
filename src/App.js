@@ -17,7 +17,7 @@ const App = () => {
         <NavMenu />
         <Routes>
           <Route exact path='/' element={<AllocationPage />} />
-          <Route exact path='allocations' element={<AllocationPage />} />
+          <Route exact path='analyze' element={<AllocationPage />} />
           <Route exact path='transactions' element={<TransactionTable />} />
         </Routes>
       </Container>

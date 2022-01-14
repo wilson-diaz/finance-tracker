@@ -9,9 +9,9 @@ const NavMenu = () => {
   return (
     <Menu pointing secondary>
       <Menu.Item
-        as={Link} to='/allocations'
-        name='allocations'
-        active={activeItem === 'allocations'}
+        as={Link} to='/analyze'
+        name='analyze'
+        active={activeItem === 'analyze'}
         onClick={handleItemClick}
       />
       <Menu.Item
