@@ -1,22 +1,22 @@
 import React from 'react'
 import { Grid, Segment, Header } from 'semantic-ui-react'
-import AllocationChart from './AllocationChart'
-import AllocationAmountList from './AllocationAmountList'
+import ExpensesPie from './ExpensesPie'
+import ExpenseCategoryList from './ExpenseCategoryList'
 
-const AllocationPage = () => {
+const AnalyzePage = () => {
   return (
     <Segment>
       <Header as='h2'>Current Expenses</Header>
       <Grid columns={2}>
         <Grid.Column>
-          <AllocationChart />
+          <ExpensesPie />
         </Grid.Column>
         <Grid.Column>
-          <AllocationAmountList />
+          <ExpenseCategoryList />
         </Grid.Column>
       </Grid>
     </Segment>
   )
 }
 
-export default AllocationPage
+export default AnalyzePage
