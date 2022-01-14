@@ -1,50 +1,69 @@
 import React from 'react'
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip } from 'recharts'
-import { Header } from 'semantic-ui-react'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 
 const AllocationChart = () => {
-  const COLORS = ['#e1bc29', '#3bb273', '#e15554', '#4d9de0', '#7768ae']
-  const data = [
-    { name: 'Food', value: .15 },
-    { name: 'Savings', value: .25 },
-    { name: 'Investments', value: .2 },
-    { name: 'Rent', value: .4 },
-  ]
-
-  const RADIAN = Math.PI / 180
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-    const x = cx + radius * Math.cos(-midAngle * RADIAN)
-    const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-    return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    )
+  const options = {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie'
+    },
+    title: {
+      text: null
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: false
+        },
+        showInLegend: true
+      }
+    },
+    series: [{
+      name: 'Brands',
+      colorByPoint: true,
+      data: [{
+        name: 'Chrome',
+        y: 61.41,
+        sliced: true,
+        selected: true
+      }, {
+        name: 'Internet Explorer',
+        y: 11.84
+      }, {
+        name: 'Firefox',
+        y: 10.85
+      }, {
+        name: 'Edge',
+        y: 4.67
+      }, {
+        name: 'Safari',
+        y: 4.18
+      }, {
+        name: 'Other',
+        y: 7.05
+      }]
+    }]
   }
 
   return (
-    <div style={{ width: '100%', height: 400, paddingBottom: 40 }}>
-      <Header as='h3'>Budget Percentages</Header>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={data}
-            cy='45%'
-            labelLine={false}
-            label={renderCustomizedLabel}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend align='center' verticalAlign='bottom' iconType='circle' />
-        </PieChart>
-      </ResponsiveContainer>
+    <div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={options}
+      />
     </div>
   )
 }
