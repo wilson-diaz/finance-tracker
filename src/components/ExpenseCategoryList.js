@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Accordion, Menu, Button } from 'semantic-ui-react'
-import AllocationAmount from './AllocationAmount'
+import ExpenseCategory from './ExpenseCategory'
 
-const AllocationAmountList = () => {
+const ExpenseCategoryList = () => {
   const data = [
     { name: 'Food', value: 400 },
     { name: 'Savings', value: 6000 },
@@ -20,11 +20,11 @@ const AllocationAmountList = () => {
   return (
     <>
       <Accordion as={Menu} vertical fluid>
-        {data.map((ele, i) => <AllocationAmount key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
+        {data.map((ele, i) => <ExpenseCategory key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
       </Accordion>
       <Button floated='right'>+ Add Category</Button>
     </>
   )
 }
 
-export default AllocationAmountList
+export default ExpenseCategoryList

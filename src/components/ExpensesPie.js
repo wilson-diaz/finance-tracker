@@ -2,7 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
-const AllocationChart = () => {
+const ExpensesPie = () => {
   const options = {
     chart: {
       plotBackgroundColor: null,
@@ -68,4 +68,4 @@ const AllocationChart = () => {
   )
 }
 
-export default AllocationChart
+export default ExpensesPie
