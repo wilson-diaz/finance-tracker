@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
-const NavMenu = () => {
+const NavMenu = ({ setToken }) => {
   const [activeItem, setActiveItem] = useState('allocations')
   const handleItemClick = (e, { name }) => setActiveItem(name)
 
@@ -24,11 +25,15 @@ const NavMenu = () => {
         <Menu.Item
           name='logout'
           active={activeItem === 'logout'}
-          onClick={handleItemClick}
+          onClick={() => setToken(null)}
         />
       </Menu.Menu>
     </Menu>
   )
+}
+
+NavMenu.propTypes = {
+  setToken: PropTypes.func.isRequired
 }
 
 export default NavMenu
