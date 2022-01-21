@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 const NavMenu = ({ setToken }) => {
-  const [activeItem, setActiveItem] = useState('allocations')
+  const [activeItem, setActiveItem] = useState('analyze')
   const handleItemClick = (e, { name }) => setActiveItem(name)
 
   return (
