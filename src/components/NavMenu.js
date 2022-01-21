@@ -3,9 +3,15 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
-const NavMenu = ({ setToken }) => {
+const NavMenu = ({ client, setToken }) => {
   const [activeItem, setActiveItem] = useState('analyze')
   const handleItemClick = (e, { name }) => setActiveItem(name)
+
+  const handleLogout = () => {
+    setToken(null)
+    client.clearStore()
+    localStorage.clear()
+  }
 
   return (
     <Menu pointing secondary>
@@ -25,7 +31,7 @@ const NavMenu = ({ setToken }) => {
         <Menu.Item
           name='logout'
           active={activeItem === 'logout'}
-          onClick={() => setToken(null)}
+          onClick={handleLogout}
         />
       </Menu.Menu>
     </Menu>
@@ -33,7 +39,8 @@ const NavMenu = ({ setToken }) => {
 }
 
 NavMenu.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setToken: PropTypes.func.isRequired,
+  client: PropTypes.object.isRequired
 }
 
 export default NavMenu

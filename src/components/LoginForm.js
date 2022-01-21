@@ -16,6 +16,7 @@ const LoginForm = ({ setToken }) => {
   useEffect(() => {
     if (result.data && !result.data.loading) {
       setToken(result.data.login.value)
+      localStorage.setItem('userToken', result.data.login.value)
     }
   }, [result.data])
 
