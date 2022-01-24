@@ -1,6 +1,7 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const config = require('../utils/config')
 const User = require('../models/user')
 const Transaction = require('../models/transaction')
 const Category = require('../models/category')
@@ -18,10 +19,9 @@ module.exports = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
+      const passMatch = await bcrypt.compare(args.password, user.passHash)
 
-      if (!user || args.password != user.passHash) {
-        throw new UserInputError('wrong credentials')
-      }
+      if (!user || !passMatch) throw new AuthenticationError('Incorrect credentials. Please retry.')
 
       const userForToken = {
         username: user.username,
