@@ -44,6 +44,34 @@ module.exports = {
 
       return await transaction.populate('category')
     },
+    addCategory: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const category = new Category({ name: args.name.trim(), isEnabled: true })
+      return await category.save()
+    },
+    editCategory: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const category = await Category.findById(args.id)
+
+      // nothing to edit
+      if (!("name" in args) && !("isEnabled" in args)) return category
+
+      if ("name" in args) {
+        // avoid whitespace input
+        if (args.name.trim() === '') throw new UserInputError('Category name cannot be empty.')
+
+        // else
+        category.name = args.name.trim()
+      }
+
+      if ("isEnabled" in args) {
+        category.isEnabled = args.isEnabled
+      }
+
+      return await category.save()
+    },
     createUser: async (root, args) => {
       const passHash = await bcrypt.hash(args.password, 10)
       const newUser = new User({ username: args.username, passHash, categories: [], transactions: [] })
