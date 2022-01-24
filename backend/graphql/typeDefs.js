@@ -51,7 +51,7 @@ module.exports = gql`
     ): Category
     createUser(
       username: String!
-      passHash: String!
+      password: String!
     ): User
   }
 `

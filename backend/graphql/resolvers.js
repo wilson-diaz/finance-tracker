@@ -1,5 +1,6 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const Transaction = require('../models/transaction')
 const Category = require('../models/category')
@@ -41,6 +42,12 @@ module.exports = {
       await user.save()
 
       return transaction
+    },
+    createUser: async (root, args) => {
+      const passHash = await bcrypt.hash(args.password, 10)
+      const newUser = new User({ username: args.username, passHash, categories: [], transactions: [] })
+
+      return await newUser.save()
     }
   }
 }
