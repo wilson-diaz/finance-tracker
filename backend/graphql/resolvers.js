@@ -32,16 +32,17 @@ module.exports = {
     } 
   },
   Mutation: {
-    recordTransaction: async (root, args, context) => {
+    recordTransaction: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
-      const transaction = new Transaction({...args, date: new Date(args.date)})
+      const transaction = new Transaction({ ...args, date: new Date(args.date), user: currentUser.id })
       await transaction.save()
 
-      const user = await User.findOne({_id: args.user})
+      const user = await User.findOne({ _id: currentUser.id })
       user.transactions = user.transactions.concat(transaction)
       await user.save()
 
-      return transaction
+      return await transaction.populate('category')
     },
     createUser: async (root, args) => {
       const passHash = await bcrypt.hash(args.password, 10)
