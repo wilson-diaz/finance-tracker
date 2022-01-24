@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Transaction = require('../models/transaction')
@@ -6,12 +6,11 @@ const Category = require('../models/category')
 
 module.exports = {
   Query: {
-    transactions: async (root, args, context) => {
-      if (!args.username) { return [] }
+    userTransactions: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
       
-      const user = await User.findOne({ username: args.username }).populate('transactions')
+      const user = await User.findOne({ id: currentUser.id }).populate('transactions')
       // populate transaction categories
-      console.log(user)
       await Promise.all(user.transactions.map(async t => await t.populate('category')))
 
       return user.transactions
