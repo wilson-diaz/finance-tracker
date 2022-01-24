@@ -1,0 +1,6 @@
+.gitignore
+.env
+node_modules/
+mongo-data/
+Dockerfile
+dev.Dockerfile
