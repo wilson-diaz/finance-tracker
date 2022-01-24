@@ -9,6 +9,7 @@ module.exports = gql`
   }
 
   type Category {
+    id: ID
     name: String
     isEnabled: Boolean
     user: User
@@ -46,8 +47,9 @@ module.exports = gql`
       name: String!
     ): Category
     editCategory(
-      isEnabled: Boolean
+      id: ID!
       name: String
+      isEnabled: Boolean
     ): Category
     createUser(
       username: String!
