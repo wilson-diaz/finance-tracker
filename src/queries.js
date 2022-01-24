@@ -7,3 +7,23 @@ query login($username: String!, $password: String!) {
   }
 }
 `
+
+export const RECORD_TRANSACTION = gql`
+  mutation recordTransaction($date: String!, $amount: Float!,
+    $details: String, $category: String!) {
+    recordTransaction(
+      date: $date,
+      amount: $amount,
+      details: $details,
+      category: $category
+    ) {
+      id
+      date
+      amount
+      details
+      category {
+        name
+      }
+    }
+  }
+`
