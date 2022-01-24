@@ -24,9 +24,7 @@ module.exports = gql`
   }
 
   type Query {
-    transactions(
-      username: String
-    ): [Transaction]
+    userTransactions: [Transaction]
     login(
       username: String!
       password: String!
