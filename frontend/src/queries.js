@@ -18,6 +18,16 @@ export const GET_USER_CATEGORIES = gql`
   }
 `
 
+export const ADD_CATEGORY = gql`
+  mutation AddCategory($name: String!) {
+    addCategory(name: $name) {
+      id
+      name
+      isEnabled
+    }
+  }
+`
+
 export const RECORD_TRANSACTION = gql`
   mutation recordTransaction($date: String!, $amount: Float!,
     $details: String, $category: String!) {

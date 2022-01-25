@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Segment, Header } from 'semantic-ui-react'
 import ExpensesPie from './ExpensesPie'
 import ExpenseCategoryList from './ExpenseCategoryList'
+import CategoryForm from './CategoryForm'
 
 const AnalyzePage = () => {
   return (
@@ -13,6 +14,7 @@ const AnalyzePage = () => {
         </Grid.Column>
         <Grid.Column>
           <ExpenseCategoryList />
+          <CategoryForm />
         </Grid.Column>
       </Grid>
     </Segment>
