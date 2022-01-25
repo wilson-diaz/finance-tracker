@@ -48,6 +48,12 @@ module.exports = {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
       const category = new Category({ name: args.name.trim(), isEnabled: true })
+
+      // update user
+      const user = await User.findById(currentUser.id)
+      user.categories = user.categories.concat(category.id)
+      await user.save()
+
       return await category.save()
     },
     editCategory: async (root, args, { currentUser }) => {
