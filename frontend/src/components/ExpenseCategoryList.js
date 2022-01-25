@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Accordion, Menu, Button } from 'semantic-ui-react'
+import { Accordion, Menu } from 'semantic-ui-react'
 import ExpenseCategory from './ExpenseCategory'
 
 const ExpenseCategoryList = () => {
@@ -18,12 +18,9 @@ const ExpenseCategoryList = () => {
   }
 
   return (
-    <>
-      <Accordion as={Menu} vertical fluid>
-        {data.map((ele, i) => <ExpenseCategory key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
-      </Accordion>
-      <Button floated='right'>+ Add Category</Button>
-    </>
+    <Accordion as={Menu} vertical fluid>
+      {data.map((ele, i) => <ExpenseCategory key={ele.name} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
+    </Accordion>
   )
 }
 
