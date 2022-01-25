@@ -26,6 +26,7 @@ module.exports = gql`
 
   type Query {
     userTransactions: [Transaction]
+    userCategories: [Category]
     login(
       username: String!
       password: String!

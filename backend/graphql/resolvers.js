@@ -17,6 +17,13 @@ module.exports = {
 
       return user.transactions
     },
+    userCategories: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const user = await User.findById(currentUser.id).populate('categories')
+
+      return user.categories
+    },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
       const passMatch = await bcrypt.compare(args.password, user.passHash)
