@@ -1,11 +1,21 @@
 import { gql } from '@apollo/client'
 
 export const LOGIN = gql`
-query login($username: String!, $password: String!) {
-  login(username: $username, password: $password) {
-    value
-  }
+  query login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      value
+    }
 }
+`
+
+export const GET_USER_CATEGORIES = gql`
+  query {
+    userCategories {
+      id
+      name
+      isEnabled
+    }
+  }
 `
 
 export const RECORD_TRANSACTION = gql`
