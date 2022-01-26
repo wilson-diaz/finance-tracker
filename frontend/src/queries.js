@@ -18,6 +18,22 @@ export const GET_USER_CATEGORIES = gql`
   }
 `
 
+export const GET_USER_TRANSACTIONS = gql`
+  query {
+    userTransactions {
+      id
+      date
+      amount
+      details
+      category {
+        id
+        name
+        isEnabled
+      }
+    }
+  }
+`
+
 export const ADD_CATEGORY = gql`
   mutation AddCategory($name: String!) {
     addCategory(name: $name) {
