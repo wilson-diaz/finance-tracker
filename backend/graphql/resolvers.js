@@ -42,7 +42,7 @@ module.exports = {
     recordTransaction: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
-      const transaction = new Transaction({ ...args, date: new Date(args.date), user: currentUser.id })
+      const transaction = new Transaction({ ...args, user: currentUser.id })
       await transaction.save()
 
       const user = await User.findOne({ _id: currentUser.id })
