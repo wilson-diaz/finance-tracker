@@ -1,11 +1,22 @@
 import { useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react'
-import { ADD_CATEGORY } from '../queries'
+import { ADD_CATEGORY, GET_USER_CATEGORIES } from '../queries'
 
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('')
-  const [addCategory] = useMutation(ADD_CATEGORY)
+  const [addCategory] = useMutation(ADD_CATEGORY, {
+    update: (store, response) => {
+      const storeData = store.readQuery({ query: GET_USER_CATEGORIES })
+      store.writeQuery({
+        query: GET_USER_CATEGORIES,
+        data: {
+          ...storeData,
+          userCategories: [...storeData.userCategories, response.data.addCategory]
+        }
+      })
+    }
+  })
 
   // use to show/hide form and Add button
   const [isFormVisible, setIsFormVisible] = useState(false)
