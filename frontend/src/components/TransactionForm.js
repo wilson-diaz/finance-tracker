@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_USER_CATEGORIES, RECORD_TRANSACTION } from '../queries'
+import { GET_USER_CATEGORIES, GET_USER_TRANSACTIONS, RECORD_TRANSACTION } from '../queries'
 import { Form, Select } from 'semantic-ui-react'
 
 const getMaxDate = () => {
@@ -27,11 +27,22 @@ const TransactionForm = () => {
     })
   }
 
-  const [recordTransaction] = useMutation(RECORD_TRANSACTION)
+  const [recordTransaction] = useMutation(RECORD_TRANSACTION, {
+    update: (store, response) => {
+      const storeData = store.readQuery({ query: GET_USER_TRANSACTIONS })
+      store.writeQuery({
+        query: GET_USER_TRANSACTIONS,
+        data: {
+          ...storeData,
+          userTransactions: [...storeData.userTransactions, response.data.recordTransaction]
+        }
+      })
+    }
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    recordTransaction({ variables: { date, amount: Number(amount), details, category } })
+    recordTransaction({ variables: { date: new Date(date), amount: Number(amount), details, category } })
 
     setDate('')
     setAmount('')

@@ -58,7 +58,9 @@ export const RECORD_TRANSACTION = gql`
       amount
       details
       category {
+        id
         name
+        isEnabled
       }
     }
   }
