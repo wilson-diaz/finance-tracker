@@ -2,26 +2,22 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
   type User {
-    id: ID
-    username: String
-    categories: [Category]
-    transactions: [Transaction]
+    id: ID!
+    username: String!
   }
 
   type Category {
-    id: ID
-    name: String
-    isEnabled: Boolean
-    user: User
+    id: ID!
+    name: String!
+    isEnabled: Boolean!
   }
 
   type Transaction {
-    id: ID
-    date: String
-    amount: Float
+    id: ID!
+    date: String!
+    amount: Float!
     details: String
-    category: Category
-    user: User
+    category: Category!
   }
 
   type Query {
