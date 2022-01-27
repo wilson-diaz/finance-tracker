@@ -20,7 +20,7 @@ const TransactionForm = () => {
 
   // options for select component
   const categoryOptions = []
-  if (!userCategoriesResult.loading) {
+  if (!userCategoriesResult.loading && userCategoriesResult.data) {
     userCategoriesResult.data.userCategories.forEach(cat => {
       if (!cat.isEnabled) return
       categoryOptions.push({ key: cat.id, text: cat.name, value: cat.id })
