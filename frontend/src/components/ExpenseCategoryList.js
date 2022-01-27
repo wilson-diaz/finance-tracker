@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
 import { Accordion, Menu, Message } from 'semantic-ui-react'
-import { GET_USER_TRANSACTIONS } from '../queries'
+import { GET_USER_CATEGORIES, GET_USER_TRANSACTIONS } from '../queries'
 import ExpenseCategory from './ExpenseCategory'
 
 const ExpenseCategoryList = () => {
@@ -22,30 +22,37 @@ const ExpenseCategoryList = () => {
   }
 
   const transactionsResult = useQuery(GET_USER_TRANSACTIONS)
+  const categoriesResult = useQuery(GET_USER_CATEGORIES)
   const [listData, setListData] = useState([])
 
   useEffect(() => {
-    if (!transactionsResult.loading && transactionsResult.data) {
+    if (!transactionsResult.loading && transactionsResult.data && !categoriesResult.loading && categoriesResult.data) {
+      const categories = categoriesResult.data.userCategories.map(cat => {
+        if (cat.isEnabled) {
+          return {
+            id: cat.id,
+            name: cat.name,
+            value: 0
+          }
+        }
+      })
+
+      // get sum of transactions per category
       const data = transactionsResult.data.userTransactions.reduce((acc, t) => {
         // only current month's transactions
         if (t.category.isEnabled && new Date(Number(t.date)).getMonth() === new Date().getMonth()) {
-          // check if already aggregating for category, create new record if not
+          // update category record
           const category = acc.find(cat => cat.id === t.category.id)
-          if (category) {
-            category.value += t.amount
-          } else {
-            acc.push({ id: t.category.id, name: t.category.name, value: t.amount })
-          }
+          category.value += t.amount
         }
 
         return acc
-      }, [])
-
+      }, categories)
       setListData(data)
     }
-  }, [transactionsResult.loading, transactionsResult.data])
+  }, [transactionsResult.loading, transactionsResult.data, categoriesResult.loading, categoriesResult.data])
 
-  if (transactionsResult.data && transactionsResult.data.userTransactions.length === 0) {
+  if (listData.length === 0) {
     return (
       <Message>You do not have any categories yet. Add one below!</Message>
     )
