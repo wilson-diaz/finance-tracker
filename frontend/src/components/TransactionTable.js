@@ -1,8 +1,31 @@
+import { useQuery } from '@apollo/client'
 import React, { useMemo } from 'react'
 import { useTable } from 'react-table'
 import { Table } from 'semantic-ui-react'
+import { GET_USER_TRANSACTIONS } from '../queries'
 
 const TransactionTable = () => {
+  const transactionsResult = useQuery(GET_USER_TRANSACTIONS)
+
+  const data = useMemo(() => {
+    if (transactionsResult.loading || !transactionsResult.data) {
+      return []
+    }
+
+    return transactionsResult.data.userTransactions
+      .map(t => {
+        return {
+          id: t.id,
+          date: new Date(Number(t.date)).toLocaleDateString(),
+          amount: t.amount,
+          details: t.details,
+          category: t.category.name
+        }
+      })
+      // .sort((a, b) => new Date(b.date) - new Date(a.date))
+  }, [transactionsResult.loading, transactionsResult.data])
+
+
   const columns = useMemo(
     () => [
       {
@@ -24,14 +47,6 @@ const TransactionTable = () => {
     ],
     []
   )
-  const data = useMemo(
-    () => [
-      { date: '12-6-2021', category: 'Food', amount: 50.87, details: 'went grocery shopping' },
-      { date: '12-6-2021', category: 'Investments', amount: 200.00, details: 'bought some stock' },
-      { date: '12-7-2021', category: 'Savings', amount: 20.00, details: 'found $20 bill' },
-    ],
-    []
-  )
 
   const myTable = useTable({ columns, data })
 
@@ -43,7 +58,6 @@ const TransactionTable = () => {
     prepareRow
   } = myTable
 
-  console.log(headerGroups, rows)
 
   return (
     <Table celled {...getTableProps()}>
