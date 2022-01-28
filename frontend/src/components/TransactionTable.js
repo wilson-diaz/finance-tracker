@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React, { useMemo } from 'react'
-import { useTable } from 'react-table'
-import { Table } from 'semantic-ui-react'
+import { useFilters, usePagination, useSortBy, useTable } from 'react-table'
+import { Table, Icon } from 'semantic-ui-react'
 import { GET_USER_TRANSACTIONS } from '../queries'
 
 const TransactionTable = () => {
@@ -33,22 +33,35 @@ const TransactionTable = () => {
         accessor: 'date'
       },
       {
-        Header: 'Category',
-        accessor: 'category'
-      },
-      {
         Header: 'Amount ($)',
         accessor: 'amount'
       },
       {
+        Header: 'Category',
+        accessor: 'category',
+        disableSortBy: true
+      },
+      {
         Header: 'Details',
-        accessor: 'details'
+        accessor: 'details',
+        disableSortBy: true
       }
     ],
     []
   )
 
-  const myTable = useTable({ columns, data })
+  const myTable = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: useMemo(() => [{ id: 'date', desc: true }])
+      }
+    },
+    useFilters,
+    useSortBy,
+    usePagination,
+  )
 
   const {
     getTableProps,
@@ -67,8 +80,9 @@ const TransactionTable = () => {
             <Table.Row key={0} {...headerGroup.getHeaderGroupProps()}>
               {
                 headerGroup.headers.map(column => (
-                  <Table.HeaderCell key={column.id}  {...column.getHeaderProps()}>
+                  <Table.HeaderCell key={column.id}  {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render('Header')}
+                    <span>{column.isSorted ? (column.isSortedDesc ? <Icon name='caret down' /> : <Icon name='caret up' />) : ''}</span>
                   </Table.HeaderCell>
                 ))
               }
