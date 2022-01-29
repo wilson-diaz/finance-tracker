@@ -8,7 +8,7 @@ const User = require('./models/user')
 
 mongoose.connect(config.MONGODB_URI)
   .then(() => console.log('successfully connected to mongodb'))
-  .catch((error) => console.log('mongodb error', error.message))
+  .catch((error) => console.log('error connecting to mongodb', error.message))
 
 const server = new ApolloServer({
   typeDefs,
@@ -23,6 +23,6 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen(process.env.PORT || 4000).then(({ url }) => {
   console.log(`GraphQL server ready at: ${url}`)
 })
