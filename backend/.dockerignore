@@ -1,5 +1,6 @@
 .gitignore
 .env
+mongo.env
 node_modules/
 mongo-data/
 Dockerfile
