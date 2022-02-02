@@ -2,7 +2,7 @@
 import { useQuery } from '@apollo/client'
 import React, { useMemo } from 'react'
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table'
-import { Table, Icon, Input, Button, Select, Grid } from 'semantic-ui-react'
+import { Table, Icon, Input, Button, Select, Grid, Message } from 'semantic-ui-react'
 import { GET_USER_TRANSACTIONS } from '../queries'
 
 const TextFilter = ({ column: { filterValue, setFilter } }) => {
@@ -177,6 +177,10 @@ const TransactionTable = () => {
     useSortBy,
     usePagination
   )
+
+  if (data.length === 0) {
+    return <Message header='No Transactions' content='Recorded transactions will be listed here.' />
+  }
 
   const {
     getTableProps,
