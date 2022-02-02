@@ -54,7 +54,7 @@ const ExpenseCategoryList = () => {
 
   if (listData.length === 0) {
     return (
-      <Message>You do not have any categories yet. Add one below!</Message>
+      <Message header='No Categories' content='You do not have any categories yet. Add one below.' />
     )
   }
 
