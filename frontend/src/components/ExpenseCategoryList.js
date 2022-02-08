@@ -51,7 +51,14 @@ const ExpenseCategoryList = () => {
 
   return (
     <Accordion as={Menu} vertical fluid>
-      {listData.map((ele, i) => <ExpenseCategory key={ele.id} name={ele.name} value={ele.value} index={i} activeIndex={activeIndex} handleClick={handleClick} />)}
+      {
+        listData.map((ele, i) => (
+          <ExpenseCategory key={ele.id} name={ele.name} value={ele.value}
+            index={i} activeIndex={activeIndex} handleClick={handleClick}
+            transactions={transactionsResult.data.userTransactions.filter(t => t.category.isEnabled && t.category.id === ele.id && new Date(Number(t.date)).getMonth() === new Date().getMonth())}
+          />
+        ))
+      }
     </Accordion>
   )
 }
