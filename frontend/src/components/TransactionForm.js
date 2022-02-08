@@ -42,7 +42,7 @@ const TransactionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    recordTransaction({ variables: { date: new Date(date), amount: Number(amount), details, category } })
+    recordTransaction({ variables: { date: new Date(date + 'T00:00'), amount: Number(amount), details, category } })
 
     setDate('')
     setAmount('')

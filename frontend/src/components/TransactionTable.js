@@ -44,12 +44,14 @@ const createRangeFilter = inputType  => {
     if (inputType === 'number') {
       return Number(val)
     } else if (inputType === 'date') {
-      return Date.parse(val)
+      return Date.parse(val + 'T00:00')
     }
   }
 
   // used to populate input prop with valid value to display
   const getInputValue = val => {
+    if (!val) { return null }
+
     if (inputType === 'date') {
       const date = new Date(val)
       const dayString = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
