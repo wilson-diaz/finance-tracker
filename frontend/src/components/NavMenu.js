@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 const NavMenu = ({ client, setToken }) => {
-  const [activeItem, setActiveItem] = useState('analyze')
-  const handleItemClick = (e, { name }) => setActiveItem(name)
+  const location = useLocation()
 
   const handleLogout = () => {
     setToken(null)
@@ -18,19 +17,16 @@ const NavMenu = ({ client, setToken }) => {
       <Menu.Item
         as={Link} to='/analyze'
         name='analyze'
-        active={activeItem === 'analyze'}
-        onClick={handleItemClick}
+        active={location.pathname === '/analyze'}
       />
       <Menu.Item
         as={Link} to='/transactions'
         name='transactions'
-        active={activeItem === 'transactions'}
-        onClick={handleItemClick}
+        active={location.pathname === '/transactions'}
       />
       <Menu.Menu position='right'>
         <Menu.Item
           name='logout'
-          active={activeItem === 'logout'}
           onClick={handleLogout}
         />
       </Menu.Menu>
