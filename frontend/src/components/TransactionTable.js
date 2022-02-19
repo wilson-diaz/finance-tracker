@@ -73,9 +73,10 @@ const createRangeFilter = inputType  => {
           onChange={e => {
             setFilter((old = []) => [e.target.value ? castFilterVal(e.target.value) : undefined, old[1]])
           }}
+          size='mini'
           style={{
-            width: '135px',
-            marginRight: '0.5rem'
+            width: '115px',
+            marginRight: '0.25rem'
           }}
         />
         to
@@ -86,9 +87,10 @@ const createRangeFilter = inputType  => {
           onChange={e => {
             setFilter((old = []) => [old[0], e.target.value ? castFilterVal(e.target.value) : undefined])
           }}
+          size='mini'
           style={{
-            width: '135px',
-            marginLeft: '0.5rem'
+            width: '115px',
+            marginLeft: '0.25rem'
           }}
         />
       </div>
@@ -204,7 +206,7 @@ const TransactionTable = () => {
 
   return (
     <div>
-      <Table celled {...getTableProps()}>
+      <Table celled striped fixed {...getTableProps()}>
         <Table.Header>
           {
             headerGroups.map(headerGroup => (
