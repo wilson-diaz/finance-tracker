@@ -17,7 +17,7 @@ const NavMenu = ({ client, setToken }) => {
       <Menu.Item
         as={Link} to='/analyze'
         name='analyze'
-        active={location.pathname === '/analyze'}
+        active={location.pathname === '/analyze' || location.pathname === '/'}
       />
       <Menu.Item
         as={Link} to='/transactions'
