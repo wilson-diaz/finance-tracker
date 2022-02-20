@@ -14,10 +14,17 @@ const ExpenseCategoryList = () => {
 
   const transactionsResult = useQuery(GET_USER_TRANSACTIONS)
   const categoriesResult = useQuery(GET_USER_CATEGORIES)
-  const [listData, setListData] = useState([])
+  const [categoryTotals, setCategoryTotals] = useState([])
+  const [monthlyExpenses, setMonthlyExpenses] = useState([])
+
+  const [month] = useState(new Date().getMonth())
 
   useEffect(() => {
     if (!transactionsResult.loading && transactionsResult.data && !categoriesResult.loading && categoriesResult.data) {
+      // get transactions for month
+      const tempMonthly = transactionsResult.data.userTransactions.filter(t => t.category.isEnabled && new Date(Number(t.date)).getMonth() === month)
+      setMonthlyExpenses(tempMonthly)
+
       const categories = categoriesResult.data.userCategories.map(cat => {
         if (cat.isEnabled) {
           return {
@@ -29,21 +36,19 @@ const ExpenseCategoryList = () => {
       })
 
       // get sum of transactions per category
-      const data = transactionsResult.data.userTransactions.reduce((acc, t) => {
-        // only current month's transactions
-        if (t.category.isEnabled && new Date(Number(t.date)).getMonth() === new Date().getMonth()) {
+      setCategoryTotals(
+        tempMonthly.reduce((acc, t) => {
           // update category record
           const category = acc.find(cat => cat.id === t.category.id)
           category.value += t.amount
-        }
 
-        return acc
-      }, categories)
-      setListData(data)
+          return acc
+        }, categories)
+      )
     }
   }, [transactionsResult.loading, transactionsResult.data, categoriesResult.loading, categoriesResult.data])
 
-  if (listData.length === 0) {
+  if (categoryTotals.length === 0) {
     return (
       <Message header='No Categories' content='You do not have any categories yet. Add one below.' />
     )
@@ -52,12 +57,21 @@ const ExpenseCategoryList = () => {
   return (
     <Accordion as={Menu} vertical fluid>
       {
-        listData.map((ele, i) => (
-          <ExpenseCategory key={ele.id} name={ele.name} value={ele.value}
-            index={i} activeIndex={activeIndex} handleClick={handleClick}
-            transactions={transactionsResult.data.userTransactions.filter(t => t.category.isEnabled && t.category.id === ele.id && new Date(Number(t.date)).getMonth() === new Date().getMonth())}
-          />
-        ))
+        categoryTotals.map((ele, i) => {
+
+          const expensesForCategory =
+            monthlyExpenses
+              .filter(t => t.category.id === ele.id)
+              .sort((a, b) => new Date(Number(b.date)) - new Date(Number(a.date)))
+
+          return(
+            <ExpenseCategory key={ele.id} name={ele.name} value={ele.value}
+              index={i} activeIndex={activeIndex} handleClick={handleClick}
+              transactions={expensesForCategory.slice(0,5)}
+              numTransactions={expensesForCategory.length}
+            />
+          )
+        })
       }
     </Accordion>
   )
