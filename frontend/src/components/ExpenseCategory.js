@@ -39,7 +39,7 @@ const ExpenseCategory = ({ name, value, transactions, numTransactions, index, ac
     </Menu.Item>
   )
 }
-ExpenseCategory .propTypes = {
+ExpenseCategory.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   transactions: PropTypes.array.isRequired,

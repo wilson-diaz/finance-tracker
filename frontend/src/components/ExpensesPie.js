@@ -1,44 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useMemo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { GET_USER_TRANSACTIONS } from '../queries'
+import PropTypes from 'prop-types'
 
-const ExpensesPie = () => {
-  const transactionsResult = useQuery(GET_USER_TRANSACTIONS)
-  const [pieData, setPieData] = useState([])
-
-  useEffect(() => {
-    if (!transactionsResult.loading && transactionsResult.data) {
-      const data = transactionsResult.data.userTransactions.reduce((acc, t) => {
-        // only current month's transactions
-        if (t.category.isEnabled && new Date(Number(t.date)).getMonth() === new Date().getMonth()) {
-          // check if already aggregating for category, create new record if not
-          const category = acc.find(cat => cat.id === t.category.id)
-          if (category) {
-            category.y += t.amount
-          } else {
-            acc.push({ id: t.category.id, name: t.category.name, y: t.amount })
-          }
-        }
-
-        return acc
-      }, [])
-
-      // no transactions
-      if (data.length === 0) {
-        setPieData([{
-          id: -1,
-          name: 'No spending this month',
-          y: 1
-        }])
-      } else {
-        setPieData(data)
-      }
-    }
-  }, [transactionsResult.loading, transactionsResult.data])
-
-
+const ExpensesPie = ({ categoryTotals }) => {
+  const pieData = !categoryTotals  || categoryTotals.length === 0
+    ? [{ id: -1, name: 'No spending this month', y: 1 }]
+    : useMemo(() => categoryTotals.filter(x => x.value > 0).map(x => ({ ...x, y: x.value })), [categoryTotals])
 
   const options = {
     chart: {
@@ -74,31 +42,6 @@ const ExpensesPie = () => {
       colorByPoint: true,
       data: pieData
     }]
-    // series: [{
-    //   name: 'Brands',
-    //   colorByPoint: true,
-    //   data: [{
-    //     name: 'Chrome',
-    //     y: 61.41,
-    //     sliced: true,
-    //     selected: true
-    //   }, {
-    //     name: 'Internet Explorer',
-    //     y: 11.84
-    //   }, {
-    //     name: 'Firefox',
-    //     y: 10.85
-    //   }, {
-    //     name: 'Edge',
-    //     y: 4.67
-    //   }, {
-    //     name: 'Safari',
-    //     y: 4.18
-    //   }, {
-    //     name: 'Other',
-    //     y: 7.05
-    //   }]
-    // }]
   }
 
   return (
@@ -109,6 +52,10 @@ const ExpensesPie = () => {
       />
     </div>
   )
+}
+
+ExpensesPie.propTypes = {
+  categoryTotals: PropTypes.array.isRequired
 }
 
 export default ExpensesPie
