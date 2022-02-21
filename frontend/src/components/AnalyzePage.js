@@ -27,7 +27,10 @@ const AnalyzePage = () => {
   useEffect(() => {
     if (!transactionsResult.loading && transactionsResult.data && !categoriesResult.loading && categoriesResult.data) {
       // get transactions for month
-      const tempMonthly = transactionsResult.data.userTransactions.filter(t => t.category.isEnabled && new Date(Number(t.date)).getMonth() === date.getMonth())
+      const tempMonthly = transactionsResult.data.userTransactions.filter(t => {
+        const transactionDate = new Date(Number(t.date))
+        return t.category.isEnabled && transactionDate.getMonth() === date.getMonth() && transactionDate.getFullYear() === date.getFullYear()
+      })
       setMonthlyExpenses(tempMonthly)
 
       const categories = categoriesResult.data.userCategories.map(cat => {
