@@ -4,7 +4,7 @@ import HighchartsReact from 'highcharts-react-official'
 import PropTypes from 'prop-types'
 
 const ExpensesPie = ({ categoryTotals }) => {
-  const pieData = !categoryTotals  || categoryTotals.length === 0
+  const pieData = !categoryTotals  || categoryTotals.length === 0 || !categoryTotals.find(x => x.value > 0)
     ? [{ id: -1, name: 'No spending this month', y: 1 }]
     : useMemo(() => categoryTotals.filter(x => x.value > 0).map(x => ({ ...x, y: x.value })), [categoryTotals])
 
