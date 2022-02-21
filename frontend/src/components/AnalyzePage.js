@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Segment, Header } from 'semantic-ui-react'
+import { Grid, Segment, Header, Icon, Button } from 'semantic-ui-react'
 import ExpensesPie from './ExpensesPie'
 import ExpenseCategoryList from './ExpenseCategoryList'
 import CategoryForm from './CategoryForm'
@@ -13,7 +13,16 @@ const AnalyzePage = () => {
   const [categoryTotals, setCategoryTotals] = useState([])
   const [monthlyExpenses, setMonthlyExpenses] = useState([])
 
-  const [date] = useState(new Date())
+  const dateToStore = new Date()
+  dateToStore.setDate(1) // start at 1st to avoid edge cases when changing months
+  const [date, setDate] = useState(dateToStore)
+
+  // step is +/- 1
+  const handleMonthChange = step => {
+    const newDate = new Date(date.getTime()) // clone to avoid mutating state
+    newDate.setMonth(date.getMonth() + step) // automatically handles values > 11 and < 0
+    setDate(newDate)
+  }
 
   useEffect(() => {
     if (!transactionsResult.loading && transactionsResult.data && !categoriesResult.loading && categoriesResult.data) {
@@ -42,11 +51,25 @@ const AnalyzePage = () => {
         }, categories)
       )
     }
-  }, [transactionsResult.loading, transactionsResult.data, categoriesResult.loading, categoriesResult.data])
+  }, [transactionsResult.loading, transactionsResult.data, categoriesResult.loading, categoriesResult.data, date])
 
   return (
     <Segment>
-      <Header as='h2'>Current Expenses</Header>
+      <Grid verticalAlign='middle'>
+        <Grid.Column>
+          <Button icon onClick={() => handleMonthChange(-1)}><Icon name='chevron left' /></Button>
+        </Grid.Column>
+        <Grid.Column width={3}>
+          <Header as='h2' textAlign='center'>
+            {date.toLocaleString(undefined, { month: 'long', year: 'numeric' })}
+          </Header>
+        </Grid.Column>
+        <Grid.Column>
+          <Button icon onClick={() => handleMonthChange(1)} disabled={date.getFullYear() === new Date().getFullYear() && date.getMonth() === new Date().getMonth()}>
+            <Icon name='chevron right' />
+          </Button>
+        </Grid.Column>
+      </Grid>
       <Grid columns={2}>
         <Grid.Column>
           <ExpensesPie categoryTotals={categoryTotals} />
