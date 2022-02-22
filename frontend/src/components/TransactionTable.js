@@ -12,6 +12,7 @@ const TextFilter = ({ column: { filterValue, setFilter } }) => {
       value={filterValue || ''}
       onChange={e => setFilter(e.target.value || undefined)}
       placeholder='Search...'
+      fluid
     />
   )
 }
@@ -30,6 +31,7 @@ const SelectFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } 
     <Select
       value={filterValue}
       placeholder='Category'
+      fluid
       onChange={(e, { value }) => setFilter(value || undefined)}
       options={[
         { key: '-1', value: '', text: 'All' },
@@ -249,7 +251,7 @@ const TransactionTable = () => {
               <Table.Row key={group.id} {...group.getFooterGroupProps()}>
                 {
                   group.headers.map(column => (
-                    <Table.HeaderCell key={column.id} {...column.getFooterProps()}>{column.render('Footer')}</Table.HeaderCell>
+                    <Table.HeaderCell key={column.id} style={{ overflow: 'visible' }} {...column.getFooterProps()}>{column.render('Footer')}</Table.HeaderCell>
                   ))
                 }
               </Table.Row>
