@@ -47,6 +47,9 @@ module.exports = gql`
       details: String
       category: String! 
     ): Transaction
+    deleteTransaction(
+      id: ID!
+    ): ID
     addCategory(
       name: String!
     ): Category
