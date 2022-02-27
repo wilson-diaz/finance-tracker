@@ -129,7 +129,7 @@ const TransactionTable = () => {
       .map(t => {
         return {
           id: t.id,
-          date: new Date(Number(t.date)).toLocaleDateString(),
+          date: new Date(Number(t.date)),
           amount: t.amount,
           details: t.details,
           category: t.category.name
@@ -145,7 +145,9 @@ const TransactionTable = () => {
         Header: 'Date',
         Footer: createRangeFilter('date'),
         filter: 'dateRange',
-        accessor: 'date'
+        accessor: 'date',
+        Cell: ({ value }) => value.toLocaleDateString(),
+        sortType: 'datetime'
       },
       {
         Header: 'Amount ($)',
