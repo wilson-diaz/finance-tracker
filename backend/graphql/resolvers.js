@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const config = require('../utils/config')
@@ -49,6 +49,24 @@ module.exports = {
       user.transactions = user.transactions.concat(transaction)
       await user.save()
 
+      return await transaction.populate('category')
+    },
+    editTransaction: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const transaction = await Transaction.findById(args.id)
+      if (!transaction) throw new UserInputError('No transaction with this ID.')
+
+      if (currentUser.id !== transaction.user.toString()) throw new ForbiddenError('You do not have permission to delete this transaction.')
+
+      transaction.set({
+        date: args.date,
+        amount: args.amount,
+        details: args.details,
+        category: args.category
+      })
+
+      await transaction.save()
       return await transaction.populate('category')
     },
     addCategory: async (root, args, { currentUser }) => {

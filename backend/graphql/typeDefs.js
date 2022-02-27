@@ -40,6 +40,13 @@ module.exports = gql`
       details: String
       category: String! 
     ): Transaction
+    editTransaction(
+      id: ID!
+      date: String!
+      amount: Float!
+      details: String
+      category: String! 
+    ): Transaction
     addCategory(
       name: String!
     ): Category
