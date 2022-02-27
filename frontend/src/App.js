@@ -5,6 +5,7 @@ import { Container, Header, Image } from 'semantic-ui-react'
 import NavMenu from './components/NavMenu'
 import AnalyzePage from './components/AnalyzePage'
 import TransactionPage from './components/TransactionPage'
+import TransactionView from './components/TransactionView'
 import LoginForm from './components/LoginForm'
 import icon from './assets/favicon.ico'
 
@@ -32,6 +33,7 @@ const App = () => {
       </Container>
     )
   }
+
   return (
     <Container style={appStyle}>
       <Header as="h1">Finance Tracker</Header>
@@ -40,6 +42,7 @@ const App = () => {
         <Route exact path='/' element={<AnalyzePage />} />
         <Route exact path='analyze' element={<AnalyzePage />} />
         <Route exact path='transactions' element={<TransactionPage />} />
+        <Route exact path='transactions/:transactionId' element={<TransactionView />} />
       </Routes>
     </Container>
   )
