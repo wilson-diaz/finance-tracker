@@ -22,7 +22,7 @@ const NavMenu = ({ client, setToken }) => {
       <Menu.Item
         as={Link} to='/transactions'
         name='transactions'
-        active={location.pathname === '/transactions'}
+        active={location.pathname.includes('/transactions')}
       />
       <Menu.Menu position='right'>
         <Menu.Item
