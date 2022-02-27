@@ -69,6 +69,17 @@ module.exports = {
       await transaction.save()
       return await transaction.populate('category')
     },
+    deleteTransaction: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const transaction = await Transaction.findById(args.id)
+      if (!transaction) throw new UserInputError('No transaction with this ID.')
+
+      if (currentUser.id !== transaction.user.toString()) throw new ForbiddenError('You do not have permission to delete this transaction.')
+
+      await Transaction.deleteOne({ _id: transaction.id })
+      return transaction.id
+    },
     addCategory: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
