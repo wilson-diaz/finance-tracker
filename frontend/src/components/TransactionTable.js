@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useQuery } from '@apollo/client'
 import React, { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table'
 import { Table, Icon, Input, Button, Select, Grid, Message } from 'semantic-ui-react'
 import { GET_USER_TRANSACTIONS } from '../queries'
@@ -208,7 +209,7 @@ const TransactionTable = () => {
 
   return (
     <div>
-      <Table celled striped fixed {...getTableProps()}>
+      <Table celled striped fixed selectable {...getTableProps()}>
         <Table.Header>
           {
             headerGroups.map(headerGroup => (
@@ -230,12 +231,12 @@ const TransactionTable = () => {
             page.map(row => {
               prepareRow(row)
               return (
-                <Table.Row  key={row.id} {...row.getRowProps()}>
+                <Table.Row key={row.id} {...row.getRowProps()}>
                   {
                     row.cells.map(cell => {
                       return (
-                        <Table.Cell key={cell.column.id} {...cell.getCellProps()}>
-                          {cell.render('Cell')}
+                        <Table.Cell key={cell.column.id} selectable {...cell.getCellProps()}>
+                          <Link to={`/transactions/${row.original.id}`}>{cell.render('Cell')}</Link>
                         </Table.Cell>
                       )
                     })
