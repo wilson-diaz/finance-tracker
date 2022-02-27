@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useParams, Link } from 'react-router-dom'
-import { Segment, Header, Button, Icon } from 'semantic-ui-react'
-import { GET_USER_TRANSACTIONS } from '../queries'
+import { Segment, Header, Button, Icon, Message } from 'semantic-ui-react'
+import { DELETE_TRANSACTION, GET_USER_TRANSACTIONS } from '../queries'
 import TransactionForm from './TransactionForm'
 
 const TransactionView = () => {
@@ -17,8 +17,43 @@ const TransactionView = () => {
     }
   }, [result.loading, result.data])
 
-  if (!transaction) {
-    return <p>loading...</p>
+  const [deleteTransaction, deleteResult] = useMutation(DELETE_TRANSACTION, {
+    update: (store, response) => {
+      store.modify({
+        fields: {
+          userTransactions(userTransactions, { readField }) {
+            return userTransactions.filter(t => readField('id', t) !== response.data.deleteTransaction)
+          }
+        }
+      })
+    }
+  })
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      deleteTransaction({ variables: { id: transaction.id } })
+    }
+  }
+
+  const backButton = (
+    <Button as={Link} to='/transactions'>
+      <Icon name='arrow left'/>
+      Back
+    </Button>
+  )
+
+  // no transaction found with path param value
+  if (!result.loading && !transaction) {
+    const messageContent = deleteResult.data
+      ? 'Transaction deleted successfully.'
+      : 'Transaction does not exist.'
+
+    return (
+      <>
+        <Message success={deleteResult.data && true} content={messageContent} />
+        { backButton }
+      </>
+    )
   }
 
   return (
@@ -26,11 +61,14 @@ const TransactionView = () => {
       <Segment>
         <Header as='h3'>Transaction Details</Header>
         <TransactionForm transaction={transaction} />
+
+        <Header as='h4'>Delete Transaction</Header>
+        <Button negative onClick={handleDelete}>
+          <Icon name='trash alternate'/>
+          Delete
+        </Button>
       </Segment>
-      <Button as={Link} to='/transactions'>
-        <Icon name='arrow left'/>
-        Back
-      </Button>
+      { backButton }
     </>
   )
 }
