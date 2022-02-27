@@ -65,3 +65,26 @@ export const RECORD_TRANSACTION = gql`
     }
   }
 `
+
+export const EDIT_TRANSACTION = gql`
+  mutation editTransaction($id: ID!, $date: String!, $amount: Float!,
+    $details: String, $category: String!) {
+    editTransaction(
+      id: $id,
+      date: $date,
+      amount: $amount,
+      details: $details,
+      category: $category
+    ) {
+      id
+      date
+      amount
+      details
+      category {
+        id
+        name
+        isEnabled
+      }
+    }
+  }
+`
