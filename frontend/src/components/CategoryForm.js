@@ -12,7 +12,7 @@ const CategoryForm = () => {
         query: GET_USER_CATEGORIES,
         data: {
           ...storeData,
-          userCategories: [...storeData.userCategories, response.data.addCategory]
+          userCategories: [...storeData.userCategories, { ...response.data.addCategory, numTransactions: 0 }]
         }
       })
     }

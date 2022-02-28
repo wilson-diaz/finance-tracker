@@ -7,6 +7,11 @@ const Transaction = require('../models/transaction')
 const Category = require('../models/category')
 
 module.exports = {
+  Category: {
+    numTransactions: async (root) => {
+      return await Transaction.where({ category: root.id }).countDocuments()
+    }
+  },
   Query: {
     userTransactions: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')

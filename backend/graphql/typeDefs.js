@@ -10,6 +10,7 @@ module.exports = gql`
     id: ID!
     name: String!
     isEnabled: Boolean!
+    numTransactions: Int
   }
 
   type Transaction {
