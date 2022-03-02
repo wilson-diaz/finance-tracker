@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { useParams, Link } from 'react-router-dom'
 import { Segment, Header, Button, Icon, Message } from 'semantic-ui-react'
-import { DELETE_TRANSACTION, GET_USER_TRANSACTIONS } from '../queries'
+import { DELETE_TRANSACTION, GET_USER_CATEGORIES, GET_USER_TRANSACTIONS } from '../queries'
 import TransactionForm from './TransactionForm'
 
 const TransactionView = () => {
@@ -19,6 +19,20 @@ const TransactionView = () => {
 
   const [deleteTransaction, deleteResult] = useMutation(DELETE_TRANSACTION, {
     update: (store, response) => {
+      const transactionData = store.readQuery({ query: GET_USER_TRANSACTIONS })
+      const toDelete = transactionData.userTransactions.find(t => t.id === response.data.deleteTransaction)
+      const categoryData = store.readQuery({ query: GET_USER_CATEGORIES })
+
+      // update numTransactions
+      store.writeQuery({
+        query: GET_USER_CATEGORIES,
+        data: {
+          ...categoryData,
+          userCategories: categoryData.userCategories.map(c => c.id === toDelete.category.id ? { ...c, numTransactions: c.numTransactions -1 } : c)
+        }
+      })
+
+      // remove transaction
       store.modify({
         fields: {
           userTransactions(userTransactions, { readField }) {
