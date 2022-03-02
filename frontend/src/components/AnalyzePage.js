@@ -33,15 +33,15 @@ const AnalyzePage = () => {
       })
       setMonthlyExpenses(tempMonthly)
 
-      const categories = categoriesResult.data.userCategories.map(cat => {
-        if (cat.isEnabled) {
+      const categories = categoriesResult.data.userCategories
+        .filter(cat => cat.isEnabled)
+        .map(cat => {
           return {
             id: cat.id,
             name: cat.name,
             value: 0
           }
-        }
-      })
+        })
 
       // get sum of transactions per category
       setCategoryTotals(
