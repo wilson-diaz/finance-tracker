@@ -59,6 +59,9 @@ module.exports = gql`
       name: String
       isEnabled: Boolean
     ): Category
+    deleteCategory(
+      id: ID!
+    ): ID
     createUser(
       username: String!
       password: String!
