@@ -8,6 +8,7 @@ import TransactionPage from './components/TransactionPage'
 import TransactionView from './components/TransactionView'
 import LoginForm from './components/LoginForm'
 import icon from './assets/favicon.ico'
+import CategoriesView from './components/CategoriesView'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -43,6 +44,7 @@ const App = () => {
         <Route exact path='analyze' element={<AnalyzePage />} />
         <Route exact path='transactions' element={<TransactionPage />} />
         <Route exact path='transactions/:transactionId' element={<TransactionView />} />
+        <Route exact path='categories' element={<CategoriesView />} />
       </Routes>
     </Container>
   )

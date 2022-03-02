@@ -24,6 +24,11 @@ const NavMenu = ({ client, setToken }) => {
         name='transactions'
         active={location.pathname.includes('/transactions')}
       />
+      <Menu.Item
+        as={Link} to='/categories'
+        name='categories'
+        active={location.pathname === '/categories'}
+      />
       <Menu.Menu position='right'>
         <Menu.Item
           name='logout'

@@ -126,6 +126,7 @@ const TransactionTable = () => {
     }
 
     return transactionsResult.data.userTransactions
+      .filter(t => t.category.isEnabled)
       .map(t => {
         return {
           id: t.id,

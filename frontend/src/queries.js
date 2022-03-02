@@ -45,6 +45,24 @@ export const ADD_CATEGORY = gql`
   }
 `
 
+export const EDIT_CATEGORY = gql`
+  mutation editCategory($id: ID!, $name: String, $isEnabled: Boolean) {
+    editCategory(id: $id, name: $name, isEnabled: $isEnabled) {
+      id
+      name
+      isEnabled
+    }
+  }
+`
+
+export const DELETE_CATEGORY = gql`
+  mutation deleteCategory($id: ID!) {
+    deleteCategory(
+      id: $id
+    )
+  }
+`
+
 export const RECORD_TRANSACTION = gql`
   mutation recordTransaction($date: String!, $amount: Float!,
     $details: String, $category: String!) {

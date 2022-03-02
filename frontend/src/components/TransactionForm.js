@@ -42,14 +42,25 @@ const TransactionForm = ({ transaction }) => {
 
   const [mutation, mutationResult] = useMutation(query, {
     update: (store, response) => {
-      const storeData = store.readQuery({ query: GET_USER_TRANSACTIONS })
+      const transactionData = store.readQuery({ query: GET_USER_TRANSACTIONS })
       store.writeQuery({
         query: GET_USER_TRANSACTIONS,
         data: {
-          ...storeData,
+          ...transactionData,
           userTransactions: transaction
-            ? storeData.userTransactions.map(t => t.id === response.data.editTransaction.id ? response.data.editTransaction : t) // replace with edited
-            : storeData.userTransactions.concat(response.data.recordTransaction) // add new
+            ? transactionData.userTransactions.map(t => t.id === response.data.editTransaction.id ? response.data.editTransaction : t) // replace with edited
+            : transactionData.userTransactions.concat(response.data.recordTransaction) // add new
+        }
+      })
+
+      const categoryData = store.readQuery({ query: GET_USER_CATEGORIES })
+      store.writeQuery({
+        query: GET_USER_CATEGORIES,
+        data: {
+          ...categoryData,
+          userCategories: transaction
+            ? categoryData.userCategories
+            : categoryData.userCategories.map(c => c.id === response.data.recordTransaction.category.id ? ({ ...c, numTransactions: c.numTransactions + 1 }) : c)
         }
       })
     }
