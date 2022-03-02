@@ -120,6 +120,19 @@ module.exports = {
 
       return await category.save()
     },
+    deleteCategory: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
+
+      const category = await Category.findById(args.id)
+      if (!category) throw new UserInputError('No category with this ID.')
+
+      if (currentUser.id !== category.user.toString()) throw new ForbiddenError('You do not have permission to delete this category.')
+
+      await Category.deleteOne({ _id: category.id })
+      await Transaction.deleteMany({ category: category.id })
+
+      return category.id
+    },
     createUser: async (root, args) => {
       const passHash = await bcrypt.hash(args.password, 10)
       const newUser = new User({ username: args.username, passHash, categories: [], transactions: [] })
