@@ -88,7 +88,7 @@ module.exports = {
     addCategory: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
-      const category = new Category({ name: args.name.trim(), isEnabled: true })
+      const category = new Category({ name: args.name.trim(), isEnabled: true, user: currentUser.id })
 
       // update user
       const user = await User.findById(currentUser.id)
@@ -101,6 +101,7 @@ module.exports = {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
       const category = await Category.findById(args.id)
+      if (!category) throw new UserInputError('No category with this ID.')
 
       // nothing to edit
       if (!("name" in args) && !("isEnabled" in args)) return category
