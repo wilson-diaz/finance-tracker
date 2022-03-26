@@ -18,11 +18,6 @@ const CategoryForm = () => {
     }
   })
 
-  // use to show/hide form and Add button
-  const [isFormVisible, setIsFormVisible] = useState(false)
-
-  const toggleVisibility = () => setIsFormVisible(!isFormVisible)
-
   const handleSubmit = (e) => {
     e.preventDefault()
     addCategory({ variables: { name: categoryName } })
@@ -31,18 +26,12 @@ const CategoryForm = () => {
   }
 
   return (
-    <div>
-      <Button style={{ float: 'right', display: isFormVisible ? 'none' : '' }} onClick={toggleVisibility}>
-        + Add Category
-      </Button>
-      <Segment style={{ clear: 'right', display: isFormVisible ? '' : 'none' }}>
-        <Form onSubmit={handleSubmit}>
-          <Form.Input label='New Category' type='text' placeholder='Name' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
-          <Button type='button' onClick={toggleVisibility}>Cancel</Button>
-          <Button type='submit'>Submit</Button>
-        </Form>
-      </Segment>
-    </div>
+    <Segment>
+      <Form onSubmit={handleSubmit}>
+        <Form.Input label='New Category' type='text' placeholder='Name' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+        <Button type='submit'>Submit</Button>
+      </Form>
+    </Segment>
   )
 }
 
