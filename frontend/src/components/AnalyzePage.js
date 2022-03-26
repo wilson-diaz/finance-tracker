@@ -5,6 +5,7 @@ import ExpenseCategoryList from './ExpenseCategoryList'
 import CategoryForm from './CategoryForm'
 import { GET_USER_CATEGORIES, GET_USER_TRANSACTIONS } from '../queries'
 import { useQuery } from '@apollo/client'
+import Toggle from './Toggle'
 
 const AnalyzePage = () => {
   const transactionsResult = useQuery(GET_USER_TRANSACTIONS)
@@ -56,6 +57,13 @@ const AnalyzePage = () => {
     }
   }, [transactionsResult.loading, transactionsResult.data, categoriesResult.loading, categoriesResult.data, date])
 
+  const toggleBtnContent = (
+    <>
+      <Icon name='add' />
+      Add Category
+    </>
+  )
+
   return (
     <Segment>
       <Grid verticalAlign='middle'>
@@ -79,7 +87,9 @@ const AnalyzePage = () => {
         </Grid.Column>
         <Grid.Column>
           <ExpenseCategoryList categoryTotals={categoryTotals} monthlyExpenses={monthlyExpenses} />
-          <CategoryForm />
+          <Toggle buttonContent={toggleBtnContent} buttonStyle={{ float: 'right' }} >
+            <CategoryForm />
+          </Toggle>
         </Grid.Column>
       </Grid>
     </Segment>
