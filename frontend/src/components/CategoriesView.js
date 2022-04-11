@@ -51,7 +51,9 @@ const CategoriesView = () => {
   }
 
   const handleDelete = (x) => {
-    deleteCategory({ variables: { id: x.id } })
+    if (window.confirm('Are you sure you want to delete this category and all it\'s transactions?')) {
+      deleteCategory({ variables: { id: x.id } })
+    }
   }
 
   if (!categoryResult.data || categoryResult.data.userCategories.length === 0) {
