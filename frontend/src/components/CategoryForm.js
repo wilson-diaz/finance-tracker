@@ -28,7 +28,7 @@ const CategoryForm = () => {
   return (
     <Segment>
       <Form onSubmit={handleSubmit}>
-        <Form.Input label='New Category' type='text' placeholder='Name' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+        <Form.Input required label='New Category' type='text' placeholder='Name' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
         <Button type='submit'>Submit</Button>
       </Form>
     </Segment>
