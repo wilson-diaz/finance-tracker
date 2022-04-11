@@ -16,18 +16,12 @@ module.exports = {
     userTransactions: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
       
-      const user = await User.findOne({ id: currentUser.id }).populate('transactions')
-      // populate transaction categories
-      await Promise.all(user.transactions.map(async t => await t.populate('category')))
-
-      return user.transactions
+      return await Transaction.find({ user: currentUser.id }).populate('category')
     },
     userCategories: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
-      const user = await User.findById(currentUser.id).populate('categories')
-
-      return user.categories
+      return Category.find({ user: currentUser.id })
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
@@ -49,10 +43,6 @@ module.exports = {
 
       const transaction = new Transaction({ ...args, user: currentUser.id })
       await transaction.save()
-
-      const user = await User.findOne({ _id: currentUser.id })
-      user.transactions = user.transactions.concat(transaction)
-      await user.save()
 
       return await transaction.populate('category')
     },
@@ -82,18 +72,14 @@ module.exports = {
 
       if (currentUser.id !== transaction.user.toString()) throw new ForbiddenError('You do not have permission to delete this transaction.')
 
-      await Transaction.deleteOne({ _id: transaction.id })
+      await Transaction.findByIdAndDelete(transaction.id)
+
       return transaction.id
     },
     addCategory: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
       const category = new Category({ name: args.name.trim(), isEnabled: true, user: currentUser.id })
-
-      // update user
-      const user = await User.findById(currentUser.id)
-      user.categories = user.categories.concat(category.id)
-      await user.save()
 
       return await category.save()
     },
@@ -125,10 +111,9 @@ module.exports = {
 
       const category = await Category.findById(args.id)
       if (!category) throw new UserInputError('No category with this ID.')
-
       if (currentUser.id !== category.user.toString()) throw new ForbiddenError('You do not have permission to delete this category.')
 
-      await Category.deleteOne({ _id: category.id })
+      await Category.findByIdAndDelete(category.id)
       await Transaction.deleteMany({ category: category.id })
 
       return category.id
