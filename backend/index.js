@@ -20,7 +20,8 @@ const server = new ApolloServer({
       const currentUser = await User.findById(decodedToken.id)
       return { currentUser }
     }
-  }
+  },
+  cors: true
 })
 
 server.listen(process.env.PORT || 4000).then(({ url }) => {
