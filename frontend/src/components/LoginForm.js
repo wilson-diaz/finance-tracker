@@ -3,18 +3,26 @@ import { useLazyQuery } from '@apollo/client'
 import { LOGIN } from '../queries'
 import { Form, Button, Segment, Grid } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import ErrorMessage from './ErrorMessage'
 
 const LoginForm = ({ setToken }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [login, result] = useLazyQuery(LOGIN)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [login, result] = useLazyQuery(LOGIN, {
+    onError: (error) => setErrorMessage(error.message)
+  })
 
   const handleLogin = () => {
-    login({ variables: { username, password } })
+    if (!username || !password) {
+      setErrorMessage('Please enter your credentials.')
+    } else {
+      login({ variables: { username, password } })
+    }
   }
 
   useEffect(() => {
-    if (result.data && !result.data.loading) {
+    if (result.data && !result.data.loading && !result.error) {
       setToken(result.data.login.value)
       localStorage.setItem('userToken', result.data.login.value)
     }
@@ -37,6 +45,7 @@ const LoginForm = ({ setToken }) => {
             <Button type='submit' onClick={handleLogin}>Log In</Button>
           </Form>
         </Segment>
+        { errorMessage && <ErrorMessage content={errorMessage} /> }
       </Grid.Column>
       <Grid.Column></Grid.Column>
     </Grid>
