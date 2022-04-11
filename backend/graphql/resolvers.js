@@ -24,8 +24,10 @@ module.exports = {
       return Category.find({ user: currentUser.id })
     },
     login: async (root, args) => {
+      if (!args.username || !args.password) throw new UserInputError('Please enter your credentials.')
+
       const user = await User.findOne({ username: args.username })
-      const passMatch = await bcrypt.compare(args.password, user.passHash)
+      const passMatch = user ? await bcrypt.compare(args.password, user.passHash) : null
 
       if (!user || !passMatch) throw new AuthenticationError('Incorrect credentials. Please retry.')
 
