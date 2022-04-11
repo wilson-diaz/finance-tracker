@@ -9,7 +9,10 @@ const LoginForm = ({ setToken }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const [login, result] = useLazyQuery(LOGIN)
+
+  const [login, result] = useLazyQuery(LOGIN, {
+    onError: (error) => setErrorMessage(error.message)
+  })
 
   const handleLogin = () => {
     if (!username || !password) {

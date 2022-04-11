@@ -81,6 +81,10 @@ module.exports = {
     addCategory: async (root, args, { currentUser }) => {
       if (!currentUser) throw new AuthenticationError('Not Authenticated! Please log in.')
 
+      // check unique
+      const temp = await Category.find({ name: args.name.trim(), user: currentUser.id })
+      if (temp.length !== 0) throw new UserInputError('Category with this name already exists. Enter unique name.')
+
       const category = new Category({ name: args.name.trim(), isEnabled: true, user: currentUser.id })
 
       return await category.save()
@@ -121,8 +125,12 @@ module.exports = {
       return category.id
     },
     createUser: async (root, args) => {
+      // check unique
+      const temp = await User.find({ username: args.username })
+      if (temp.length !== 0) throw new UserInputError('User with this username already exists. Enter unique username.')
+
       const passHash = await bcrypt.hash(args.password, 10)
-      const newUser = new User({ username: args.username, passHash, categories: [], transactions: [] })
+      const newUser = new User({ username: args.username, passHash })
 
       return await newUser.save()
     }
